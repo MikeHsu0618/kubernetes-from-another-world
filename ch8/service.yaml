@@ -1,0 +1,14 @@
+# service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    type: demo
+  type: NodePort // 這裡我們將能直接暴露端口的 `Loadbalancer` 改成 `NodePort`
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8080
+      nodePort: 30390
