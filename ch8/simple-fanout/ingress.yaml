@@ -1,0 +1,28 @@
+  # ingress.yaml
+  apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: my-ingress
+  spec:
+    ingressClassName: nginx
+    rules:
+      - host: foo.com
+        http:
+          paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: foo-service
+                  port:
+                    number: 8000
+      - host: bar.com
+        http:
+          paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: bar-service
+                  port:
+                    number: 8000

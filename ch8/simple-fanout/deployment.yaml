@@ -1,0 +1,44 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo-deployment
+  labels:
+    type: foo-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: foo-demo
+  template:
+    metadata:
+      labels:
+        type: foo-demo
+    spec:
+      containers:
+        - name: foo
+          image: mikehsu0618/foo
+          ports:
+            - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bar-deployment
+  labels:
+    type: bar-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: bar-demo
+  template:
+    metadata:
+      labels:
+        type: bar-demo
+    spec:
+      containers:
+        - name: bar
+          image: mikehsu0618/bar
+          ports:
+            - containerPort: 8080
