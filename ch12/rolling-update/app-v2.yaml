@@ -1,0 +1,28 @@
+# app-v2.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo-deployment
+  labels:
+    app: foo
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: foo
+  template:
+    metadata:
+      labels:
+        app: foo
+        version: v2
+    spec:
+      containers:
+        - name: foo
+          image: mikehsu0618/foo
+          ports:
+            - containerPort: 8080
