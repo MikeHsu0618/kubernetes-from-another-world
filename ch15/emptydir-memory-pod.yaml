@@ -1,0 +1,28 @@
+# emptydir-memory-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: emptydir-memory-pod
+spec:
+  volumes:
+    - name: html
+      emptyDir:
+        medium: Memory                #指定使用記憶體儲存
+        sizeLimit: 256Mi              #限制內存大小
+  containers:
+    - name: nginx
+      image: nginx:latest
+      volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html
+    - name: alpine
+      image: alpine
+      volumeMounts:
+        - name: html
+          mountPath: /html
+      command: [ "/bin/sh", "-c" ]
+      args:
+        - while true; do
+          echo $(hostname) $(date) >> /html/index.html;
+          sleep 10;
+          done

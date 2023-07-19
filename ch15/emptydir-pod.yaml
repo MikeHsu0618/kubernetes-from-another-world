@@ -1,0 +1,26 @@
+# emptydir-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: emptydir-pod
+spec:
+  volumes:
+    - name: html
+      emptyDir: {}
+  containers:
+    - name: nginx
+      image: nginx:latest
+      volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html
+    - name: alpine
+      image: alpine
+      volumeMounts:
+        - name: html
+          mountPath: /html
+      command: [ "/bin/sh", "-c" ]
+      args: # 每十秒定時向 /html/index.html 寫入資料
+        - while true; do
+          echo $(hostname) $(date) >> /html/index.html;
+          sleep 10;
+          done
