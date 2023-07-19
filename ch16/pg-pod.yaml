@@ -1,0 +1,76 @@
+# pg-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  labels:
+    app: db
+spec:
+  containers:
+    - name: db
+      image: postgres:12.4-alpine
+      env:
+        # 使用 configmap 的 key-value 做為值傳入
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: initdb-kv-yaml
+              key: PG_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: initdb-kv-yaml
+              key: PG_PASSWORD
+        - name: PGDATA
+          value: '/var/lib/postgresql/data/pgdata'
+        - name: POSTGRES_DB
+          value: 'posts'
+      ports:
+        - containerPort: 5432
+      volumeMounts:
+        # 使用 configmap 做為 file 當作初始化設定
+        - mountPath: /docker-entrypoint-initdb.d
+          name: initdb
+  volumes:
+    - name: initdb
+      configMap:
+        name: initdb
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: initdb
+  labels:
+    app: db
+data:
+  initdb.sql: |
+    DROP TABLE IF EXISTS posts CASCADE;
+    
+    CREATE TABLE posts
+    (
+        id             BIGSERIAL PRIMARY KEY,
+        uuid           VARCHAR(36)  NOT NULL UNIQUE,
+        user_id        NUMERIC      NOT NULL,
+        title          VARCHAR(255) NOT NULL,
+        content        TEXT         NOT NULL,
+        comments_count NUMERIC               DEFAULT 0,
+        created_at     TIMESTAMP    NOT NULL DEFAULT NOW(),
+        updated_at     TIMESTAMP    NOT NULL DEFAULT NOW(),
+        deleted_at     TIMESTAMP    NULL
+    );
+    
+    CREATE INDEX user_id_key ON posts (user_id);
+    
+    COMMENT ON COLUMN posts.title IS '標題';
+    COMMENT ON COLUMN posts.content IS '內容';
+    COMMENT ON COLUMN posts.comments_count IS '評論數';
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: initdb-kv-yaml
+  labels:
+    app: db
+data:
+  PG_USER: PG_USER
+  PG_PASSWORD: PG_USER
