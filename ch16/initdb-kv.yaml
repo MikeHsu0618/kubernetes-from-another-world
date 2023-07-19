@@ -1,0 +1,10 @@
+# initdb-kv.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: initdb-kv-yaml
+  labels:
+    app: db
+data:
+  PG_USER: postgres
+  PG_PASSWORD: postgres
