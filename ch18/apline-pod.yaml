@@ -1,0 +1,23 @@
+# alpine-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine-pod
+spec:
+  containers:
+    - name: alpine
+      image: alpine
+      command: [ "/bin/sh", "-c" ]
+      args: # 每十秒定時向 /html/index.html 寫入資料
+        - while true; do
+          echo $(hostname) $(date) >> /html/index.html;
+          sleep 10;
+          done
+      volumeMounts:
+        - name: html
+          mountPath: /html
+  volumes:
+    - name: html
+      persistentVolumeClaim:
+        claimName: pvc-demo
+        readOnly: false
