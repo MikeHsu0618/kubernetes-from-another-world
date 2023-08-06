@@ -1,0 +1,14 @@
+# headless-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: foo-service
+  labels:
+    app: foo
+spec:
+  ports:
+    - port: 80
+      name: http
+  clusterIP: None
+  selector:
+    app: foo

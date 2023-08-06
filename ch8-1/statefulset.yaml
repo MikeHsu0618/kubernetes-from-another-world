@@ -1,0 +1,37 @@
+# statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: foo-statefulset
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: foo
+  serviceName: "foo-service"
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: foo
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: foo
+          image: nginx
+          ports:
+            - containerPort: 80
+              name: http
+          volumeMounts:
+            - name: pvc
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: pvc
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "hostpath"
+        resources:
+          requests:
+            storage: 1Gi
