@@ -8,7 +8,7 @@ spec:
     - max:
         cpu: 1000m
         memory: 500Mi
-        min:
-          cpu: 100m
-          memory: 50Mi
-        type: Container
+      min:
+        cpu: 100m
+        memory: 50Mi
+      type: Container

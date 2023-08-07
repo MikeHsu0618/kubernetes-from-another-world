@@ -7,3 +7,10 @@ spec:
   containers:
     - name: default-limit-range-pod
       image: nginx
+      resources:
+        limits:
+          cpu: "1"
+          memory: 700Mi
+        requests:
+          cpu: "1"
+          memory: 700Mi

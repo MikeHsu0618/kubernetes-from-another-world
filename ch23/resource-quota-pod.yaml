@@ -1,0 +1,16 @@
+# resource-quota-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resource-quota-poddemo
+spec:
+  containers:
+    - name: resource-quota-pod
+      image: nginx
+      resources:
+        limits:
+          memory: "800Mi"
+          cpu: "800m"
+        requests:
+          memory: "600Mi"
+          cpu: "400m"
