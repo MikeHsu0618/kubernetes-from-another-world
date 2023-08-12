@@ -1,0 +1,21 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namePrefix: foo-
+nameSuffix: -v1
+
+commonLabels:
+  by: kustomization
+
+commonAnnotations:
+  note: Hello, I am foo!
+
+images:
+  - name: mikehsu0618/api-service
+    newName: mikehsu0618/foo
+    newTag: v1.0.0
+
+resources:
+  - deployment.yaml
+  - service.yaml

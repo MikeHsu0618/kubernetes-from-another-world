@@ -1,0 +1,32 @@
+# overlays/development/kustomization.yaml
+resources:
+  - ../../base
+
+namePrefix: dev-
+
+namespace: dev-namesapce
+
+commonLabels:
+  type: dev-demo
+  app: dev-foo
+
+commonAnnotations:
+  note: Hello, I am development!
+
+images:
+  - name: mikehsu0618/api-service
+    newTag: development
+
+patches:
+  - patch: |
+      - op: replace
+        path: /metadata/name
+        value: the-dev-development
+      - op: replace
+        path: /spec/template/spec/containers/0/name
+        value: the-dev-container
+    target:
+      group: apps
+      kind: Deployment
+      version: v1
+      name: foo-deployment-v1

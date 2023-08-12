@@ -1,0 +1,22 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+  labels:
+    type: demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: demo
+  template:
+    metadata:
+      labels:
+        type: demo
+    spec:
+      containers:
+        - name: api-service
+          image: mikehsu0618/api-service:tag
+          ports:
+            - containerPort: 8080
