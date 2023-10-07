@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     type: demo
-  type: NodePort // 這裡我們將能直接暴露端口的 `Loadbalancer` 改成 `NodePort`
+  type: NodePort # 這裡我們將能直接暴露端口的 `Loadbalancer` 改成 `NodePort`
   ports:
     - protocol: TCP
       port: 8000
